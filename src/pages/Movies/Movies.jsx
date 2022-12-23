@@ -8,9 +8,9 @@ import Loader from 'components/Loader/Loader';
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const query = searchQuery.get('query');
+  const queryParam = searchParams.get('query');
 
   const location = useLocation();
 
@@ -18,7 +18,7 @@ const Movies = () => {
     const fetchSearchMovies = async () => {
       setIsLoading(true);
 
-      const movies = await getMovieByQuery(query);
+      const movies = await getMovieByQuery(queryParam);
       const modifaedMovies = movies.results.map(
         ({ id, title, poster_path, vote_average, release_date }) => ({
           id,
@@ -34,24 +34,24 @@ const Movies = () => {
       setIsLoading(false);
     };
 
-    if (query) {
+    if (queryParam) {
       fetchSearchMovies();
     }
-  }, [query]);
+  }, [queryParam]);
 
   const searchMoviesHandler = query => {
-    if (searchQuery !== query) {
+    if (query !== queryParam) {
       setMovies([]);
     }
 
-    setSearchQuery({ query });
+    setSearchParams({ query });
   };
 
   return (
     <div>
       <SearchForm showMovies={searchMoviesHandler} />
       {isLoading && <Loader />}
-      {!isLoading && movies.length === 0 && query && <p>Not found!</p>}
+      {!isLoading && movies.length === 0 && queryParam && <p>Not found!</p>}
       {!isLoading && movies.length > 0 && (
         <ul>
           {movies.map(movie => (
