@@ -1,0 +1,12 @@
+.formWrapper {
+  padding: 30px 0;
+}
+
+.formWrapper input {
+  padding: 5px;
+}
+
+.formWrapper button {
+  cursor: pointer;
+  padding: 5px 15px;
+}

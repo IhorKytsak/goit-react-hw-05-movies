@@ -1,0 +1,10 @@
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-bottom: 50px;
+}
+
+.reviewsList h3 {
+  margin-bottom: 10px;
+}

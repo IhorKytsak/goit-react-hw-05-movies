@@ -1,0 +1,40 @@
+.movieWrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.movieImg {
+  width: 300px;
+  height: 450px;
+}
+
+.movieInfo {
+  flex: 1 1;
+  min-width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.movieInfo h1 {
+  font-size: 24px;
+}
+
+.movieInfoWithTitle h3,
+.movieInfoWithTitle h4 {
+  margin-bottom: 15px;
+}
+
+.additionalInfoWrapper {
+  padding: 25px 0;
+}
+
+.additionalInfoWrapper ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

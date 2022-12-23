@@ -1,0 +1,17 @@
+.backBtn {
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 5px 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  transition: all 0.2s linear;
+}
+
+.backBtn:hover {
+  background-color: rgb(212, 211, 211);
+}
