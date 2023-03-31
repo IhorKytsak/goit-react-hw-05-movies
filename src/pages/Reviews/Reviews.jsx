@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getMovieReviews } from '../../utils/movieApi';
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader';
 
 import styles from './Reviews.module.css';
 

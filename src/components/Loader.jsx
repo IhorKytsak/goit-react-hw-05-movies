@@ -7,7 +7,7 @@ const Loader = () => {
       wrapperStyle={{
         display: 'flex',
         justifyContent: 'center',
-        padding: '30px 0',
+        margin: '60px',
       }}
       color="#00BFFF"
       height={80}

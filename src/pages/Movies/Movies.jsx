@@ -1,42 +1,47 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
-import { getMovieByQuery } from 'utils/movieApi';
+import MoviesList from 'components/MoviesList/MoviesList';
 import SearchForm from 'components/SearchForm/SearchForm';
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader';
+import ErrorMessage from 'components/ErrorMessage';
+import { getMovieByQuery } from 'utils/movieApi';
 
 const Movies = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const queryParam = searchParams.get('query');
 
-  const location = useLocation();
-
   useEffect(() => {
+    const controller = new AbortController();
     const fetchSearchMovies = async () => {
-      setIsLoading(true);
+      try {
+        setIsLoading(true);
 
-      const movies = await getMovieByQuery(queryParam);
-      const modifaedMovies = movies.results.map(
-        ({ id, title, poster_path, vote_average, release_date }) => ({
+        const movies = await getMovieByQuery(queryParam, controller.signal);
+        const modifaedMovies = movies.results.map(({ id, title }) => ({
           id,
           title,
-          poster_path,
-          vote_average,
-          release_date,
-        })
-      );
+        }));
 
-      setMovies(modifaedMovies);
-
-      setIsLoading(false);
+        setMovies(modifaedMovies);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     if (queryParam) {
       fetchSearchMovies();
     }
+
+    return () => {
+      controller.abort();
+    };
   }, [queryParam]);
 
   const searchMoviesHandler = query => {
@@ -47,22 +52,14 @@ const Movies = () => {
     setSearchParams({ query });
   };
 
+  if (error && error !== 'canceled') {
+    return <ErrorMessage message={error} />;
+  }
+
   return (
     <div>
-      <SearchForm showMovies={searchMoviesHandler} />
-      {isLoading && <Loader />}
-      {!isLoading && movies.length === 0 && queryParam && <p>Not found!</p>}
-      {!isLoading && movies.length > 0 && (
-        <ul>
-          {movies.map(movie => (
-            <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`} state={{ from: location }}>
-                {movie.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <SearchForm onSearchMovies={searchMoviesHandler} />
+      {isLoading ? <Loader /> : <MoviesList movies={movies} />}
     </div>
   );
 };

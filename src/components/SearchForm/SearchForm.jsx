@@ -3,17 +3,19 @@ import { BiSearchAlt } from 'react-icons/bi';
 
 import styles from './SearchForm.module.css';
 
-const SearchForm = ({ showMovies }) => {
-  const handleSubmit = e => {
-    e.preventDefault();
-    const searchQuery = e.target.elements.query.value;
+const SearchForm = ({ onSearchMovies }) => {
+  const handleSubmit = event => {
+    event.preventDefault();
 
-    if (searchQuery.trim() === '') {
+    const form = event.target;
+    const searchQuery = form.elements.query.value.trim();
+
+    if (searchQuery === '') {
       return;
     }
 
-    showMovies(searchQuery);
-    e.target.reset();
+    onSearchMovies(searchQuery);
+    form.reset();
   };
 
   return (
@@ -27,7 +29,7 @@ const SearchForm = ({ showMovies }) => {
 };
 
 SearchForm.propTypes = {
-  showMovies: PropTypes.func,
+  onSearchMovies: PropTypes.func.isRequired,
 };
 
 export default SearchForm;

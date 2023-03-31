@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import { getMovieCast } from 'utils/movieApi';
 import { getImgUrl } from 'utils/getImgUrl';
 import CastList from 'components/CastList/CastList';
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader';
 
 const Cast = () => {
   const { movieId } = useParams();
 
-  const [actors, setActors] = useState([]);
+  const [cast, setCast] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Cast = () => {
         })
       );
 
-      setActors(formatedMovieCast);
+      setCast(formatedMovieCast);
       setIsLoading(false);
     };
 
@@ -36,10 +36,10 @@ const Cast = () => {
   return (
     <>
       {isLoading && <Loader />}
-      {actors.length === 0 && !isLoading ? (
-        <p>Unfortunately no actors was found.</p>
+      {cast.length === 0 && !isLoading ? (
+        <p>Unfortunately no cast was found.</p>
       ) : (
-        <CastList actors={actors} />
+        <CastList cast={cast} />
       )}
     </>
   );

@@ -3,9 +3,10 @@ import axios from 'axios';
 axios.defaults.baseURL = 'https://api.themoviedb.org/3';
 const API_KEY = '9f418ce48484288694da4da227268766';
 
-export const getMovieByQuery = async request => {
+export const getMovieByQuery = async (query, signal) => {
   const response = await axios.get(
-    `/search/movie?api_key=${API_KEY}&query=${request}`
+    `/search/movie?api_key=${API_KEY}&query=${query}`,
+    { signal: signal }
   );
   return response.data;
 };

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 
-import Loader from 'components/Loader/Loader';
+import MoviesList from 'components/MoviesList/MoviesList';
+import Loader from 'components/Loader';
+import ErrorMessage from 'components/ErrorMessage';
 import { getTrendingMovies } from 'utils/movieApi';
 
 import styles from './Home.module.css';
@@ -9,42 +10,43 @@ import styles from './Home.module.css';
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const location = useLocation();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {
-      setIsLoading(true);
+      try {
+        setIsLoading(true);
 
-      const movies = await getTrendingMovies();
-      const formatedMovies = movies.map(({ id, title, poster_path }) => ({
-        id,
-        title,
-        poster_path,
-      }));
+        const movies = await getTrendingMovies();
+        const formatedMovies = movies.map(({ id, title }) => ({
+          id,
+          title,
+        }));
 
-      setTrendingMovies(formatedMovies);
-      setIsLoading(false);
+        setTrendingMovies(formatedMovies);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchTrendingMovies();
   }, []);
 
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div>
       <h1 className={styles.title}>Trending today</h1>
-      {isLoading && <Loader />}
-      {!isLoading && (
-        <ul>
-          {trendingMovies.map(movie => (
-            <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`} state={{ from: location }}>
-                {movie.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+
+      <MoviesList movies={trendingMovies} />
     </div>
   );
 };

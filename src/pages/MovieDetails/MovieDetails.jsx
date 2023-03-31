@@ -2,7 +2,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { NavLink, useParams, useLocation, Outlet } from 'react-router-dom';
 
 import BackButton from 'components/BackButton/BackButton';
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader';
 import { getMovieById } from 'utils/movieApi';
 import { getImgUrl } from 'utils/getImgUrl';
 
@@ -13,8 +13,9 @@ const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { movieId } = useParams();
-  
+
   const location = useLocation();
+  const backUrl = location?.state?.from ?? '/';
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -45,7 +46,7 @@ const MovieDetails = () => {
 
   return (
     <div>
-      <BackButton />
+      <BackButton to={backUrl} />
       {isLoading && <Loader />}
 
       {!isLoading && (

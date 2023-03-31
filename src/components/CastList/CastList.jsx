@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 
 import styles from './CastList.module.css';
 
-const CastList = ({ actors }) => {
+const CastList = ({ cast }) => {
   return (
     <ul className={styles.castList}>
-      {actors.map(actor => {
+      {cast.map(actor => {
         return (
           <li key={actor.id}>
             <img src={actor.imgUrl} alt={actor.name} />
@@ -21,14 +21,14 @@ const CastList = ({ actors }) => {
 };
 
 CastList.propTypes = {
-  actors: PropTypes.arrayOf(
+  cast: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
       imgUrl: PropTypes.string.isRequired,
       character: PropTypes.string.isRequired,
     })
-  ).isRequired,
+  ),
 };
 
 export default CastList;

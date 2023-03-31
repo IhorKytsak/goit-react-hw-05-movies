@@ -1,0 +1,19 @@
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.listItem a {
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+
+  transition: all 0.2s;
+}
+.listItem a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
