@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { getMovieReviews } from '../../utils/movieApi';
 import Loader from 'components/Loader';
+import ErrorMessage from 'components/ErrorMessage';
 
 import styles from './Reviews.module.css';
 
@@ -11,25 +12,39 @@ const Reviews = () => {
 
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
-      setIsLoading(true);
+      try {
+        setIsLoading(true);
 
-      const reviews = await getMovieReviews(movieId);
+        const reviews = await getMovieReviews(movieId);
 
-      const formatedReviews = reviews.map(({ author, content, id }) => ({
-        author,
-        content,
-        id,
-      }));
+        const formatedReviews = reviews.map(({ author, content, id }) => ({
+          author,
+          content,
+          id,
+        }));
 
-      setReviews(formatedReviews);
-      setIsLoading(false);
+        setReviews(formatedReviews);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchReviews();
   }, [movieId]);
+
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   const reviewsList = (
     <ul className={styles.reviewsList}>
